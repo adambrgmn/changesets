@@ -39,7 +39,8 @@ export default async function add(
   } else {
     const changedPackages = await git.getChangedPackagesSinceRef({
       cwd,
-      ref: config.baseBranch
+      ref: config.baseBranch,
+      packages
     });
     const changePackagesName = changedPackages
       .filter(a => a)

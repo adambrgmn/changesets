@@ -169,7 +169,11 @@ export async function run(
         return;
       }
       case "status": {
-        await status(cwd, { sinceMaster, since, verbose, output }, config);
+        await status(
+          cwd,
+          { sinceMaster, since, verbose, output, packages: flags.packages },
+          config
+        );
         return;
       }
       case "pre": {

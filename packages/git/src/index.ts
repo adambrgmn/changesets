@@ -1,7 +1,7 @@
 import spawn from "spawndamnit";
 import fs from "fs";
 import path from "path";
-import { getPackages, Package } from "@manypkg/get-packages";
+import { getPackages, Package, Packages } from "@manypkg/get-packages";
 import { GitError } from "@changesets/errors";
 import isSubdir from "is-subdir";
 import { deprecate } from "util";
@@ -228,13 +228,18 @@ async function getChangedChangesetFilesSinceRef({
 
 async function getChangedPackagesSinceRef({
   cwd,
-  ref
+  ref,
+  packages
 }: {
   cwd: string;
   ref: string;
+  packages?: Packages;
 }) {
   const changedFiles = await getChangedFilesSince({ ref, cwd, fullPath: true });
-  let packages = await getPackages(cwd);
+
+  if (packages == null) {
+    packages = await getPackages(cwd);
+  }
 
   const fileToPackage: Record<string, Package> = {};
 

@@ -12,6 +12,7 @@ import {
   ComprehensiveRelease,
   Config
 } from "@changesets/types";
+import { findPackages } from "../../utils/find-packages";
 
 export default async function getStatus(
   cwd: string,
@@ -19,12 +20,14 @@ export default async function getStatus(
     sinceMaster,
     since,
     verbose,
-    output
+    output,
+    packages: glob
   }: {
     sinceMaster?: boolean;
     since?: string;
     verbose?: boolean;
     output?: string;
+    packages?: string;
   },
   config: Config
 ) {
@@ -38,9 +41,11 @@ export default async function getStatus(
     since === undefined ? (sinceMaster ? "master" : undefined) : since;
   const releasePlan = await getReleasePlan(cwd, sinceBranch, config);
   const { changesets, releases } = releasePlan;
+  const packages = await findPackages(cwd, glob);
   const changedPackages = await git.getChangedPackagesSinceRef({
     cwd,
-    ref: sinceBranch || config.baseBranch
+    ref: sinceBranch || config.baseBranch,
+    packages
   });
 
   if (changedPackages.length > 0 && changesets.length === 0) {
