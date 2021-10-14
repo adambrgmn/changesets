@@ -10,9 +10,9 @@ const { input, flags } = meow(
     $ changesets [command]
   Commands
     init
-    add [--empty] [--open]
-    version [--ignore]
-    publish [--otp=code]
+    add [--empty] [--open] [--packages]
+    version [--ignore] [--packages]
+    publish [--otp=code] [--packages]
     status [--since <branch>] [--verbose] [--output=JSON_FILE.json]
     pre <enter|exit> <tag>
     `,
@@ -47,6 +47,9 @@ const { input, flags } = meow(
       },
       open: {
         type: "boolean"
+      },
+      packages: {
+        type: "string"
       }
     }
   }

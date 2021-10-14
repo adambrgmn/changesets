@@ -4,8 +4,8 @@ import { error, log, success, warn } from "@changesets/logger";
 import * as git from "@changesets/git";
 import { readPreState } from "@changesets/pre";
 import { Config, PreState } from "@changesets/types";
-import { getPackages } from "@manypkg/get-packages";
 import chalk from "chalk";
+import { findPackages } from "../../utils/find-packages";
 
 function logReleases(pkgs: Array<{ name: string; newVersion: string }>) {
   const mappedPkgs = pkgs.map(p => `${p.name}@${p.newVersion}`).join("\n");
@@ -39,7 +39,11 @@ function showNonLatestTagWarning(tag?: string, preState?: PreState) {
 
 export default async function run(
   cwd: string,
-  { otp, tag }: { otp?: string; tag?: string },
+  {
+    otp,
+    tag,
+    packages: glob
+  }: { otp?: string; tag?: string; packages?: string },
   config: Config
 ) {
   const releaseTag = tag && tag.length > 0 ? tag : undefined;
@@ -55,7 +59,7 @@ export default async function run(
     showNonLatestTagWarning(tag, preState);
   }
 
-  const { packages, tool } = await getPackages(cwd);
+  const { packages, tool } = await findPackages(cwd, glob);
 
   const response = await publishPackages({
     packages,

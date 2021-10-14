@@ -4,9 +4,9 @@ import { spawn } from "child_process";
 
 import * as cli from "../../utils/cli-utilities";
 import * as git from "@changesets/git";
+import { findPackages } from "../../utils/find-packages";
 import { info, log, warn } from "@changesets/logger";
 import { Config } from "@changesets/types";
-import { getPackages } from "@manypkg/get-packages";
 import writeChangeset from "@changesets/write";
 
 import createChangeset from "./createChangeset";
@@ -19,10 +19,14 @@ type UnwrapPromise<T extends Promise<any>> = T extends Promise<infer R>
 
 export default async function add(
   cwd: string,
-  { empty, open }: { empty?: boolean; open?: boolean },
+  {
+    empty,
+    open,
+    packages: glob
+  }: { empty?: boolean; open?: boolean; packages?: string },
   config: Config
 ) {
-  const packages = await getPackages(cwd);
+  const packages = await findPackages(cwd, glob);
   const changesetBase = path.resolve(cwd, ".changeset");
 
   let newChangeset: UnwrapPromise<ReturnType<typeof createChangeset>>;

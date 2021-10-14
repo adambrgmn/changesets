@@ -14,6 +14,7 @@ export type CliOptions = {
   snapshot?: string | boolean;
   tag?: string;
   open?: boolean;
+  packages?: string;
 };
 
 export type CommandOptions = CliOptions & {

@@ -1,7 +1,6 @@
 import { Config } from "@changesets/types";
 import fs from "fs-extra";
 import path from "path";
-import { getPackages } from "@manypkg/get-packages";
 import { getDependentsGraph } from "@changesets/get-dependents-graph";
 import { error } from "@changesets/logger";
 import { read } from "@changesets/config";
@@ -13,6 +12,7 @@ import version from "./commands/version";
 import publish from "./commands/publish";
 import status from "./commands/status";
 import pre from "./commands/pre";
+import { findPackages } from "./utils/find-packages";
 import { CliOptions } from "./types";
 
 export async function run(
@@ -36,7 +36,7 @@ export async function run(
     throw new ExitError(1);
   }
 
-  const packages = await getPackages(cwd);
+  const packages = await findPackages(cwd, flags.packages);
 
   let config: Config;
   try {
@@ -65,7 +65,7 @@ export async function run(
   if (input.length < 1) {
     const { empty, open }: CliOptions = flags;
     // @ts-ignore if this is undefined, we have already exited
-    await add(cwd, { empty, open }, config);
+    await add(cwd, { empty, open, packages: flags.packages }, config);
   } else if (input[0] !== "pre" && input.length > 1) {
     error(
       "Too many arguments passed to changesets - we only accept the command name as an argument"
@@ -104,7 +104,7 @@ export async function run(
     switch (input[0]) {
       case "add": {
         // @ts-ignore if this is undefined, we have already exited
-        await add(cwd, { empty, open }, config);
+        await add(cwd, { empty, open, packages: flags.packages }, config);
         return;
       }
       case "version": {
@@ -161,11 +161,11 @@ export async function run(
           throw new ExitError(1);
         }
 
-        await version(cwd, { snapshot }, config);
+        await version(cwd, { snapshot, packages: flags.packages }, config);
         return;
       }
       case "publish": {
-        await publish(cwd, { otp, tag }, config);
+        await publish(cwd, { otp, tag, packages: flags.packages }, config);
         return;
       }
       case "status": {

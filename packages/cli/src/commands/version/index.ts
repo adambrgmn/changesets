@@ -5,11 +5,11 @@ import { Config } from "@changesets/types";
 import applyReleasePlan from "@changesets/apply-release-plan";
 import readChangesets from "@changesets/read";
 import assembleReleasePlan from "@changesets/assemble-release-plan";
-import { getPackages } from "@manypkg/get-packages";
 
 import { removeEmptyFolders } from "../../utils/v1-legacy/removeFolders";
 import { readPreState } from "@changesets/pre";
 import { ExitError } from "@changesets/errors";
+import { findPackages } from "../../utils/find-packages";
 
 let importantSeparator = chalk.red(
   "===============================IMPORTANT!==============================="
@@ -23,6 +23,7 @@ export default async function version(
   cwd: string,
   options: {
     snapshot?: string | boolean;
+    packages?: string;
   },
   config: Config
 ) {
@@ -61,7 +62,7 @@ export default async function version(
     return;
   }
 
-  let packages = await getPackages(cwd);
+  let packages = await findPackages(cwd, options.packages);
 
   let releasePlan = assembleReleasePlan(
     changesets,
