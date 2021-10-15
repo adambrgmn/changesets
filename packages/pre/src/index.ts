@@ -1,7 +1,7 @@
 import * as fs from "fs-extra";
 import path from "path";
 import { PreState } from "@changesets/types";
-import { getPackages } from "@manypkg/get-packages";
+import { callGetPackages } from "@changesets/get-packages";
 import {
   PreExitButNotInPreModeError,
   PreEnterButInPreModeError
@@ -45,7 +45,7 @@ export async function exitPre(cwd: string) {
 }
 
 export async function enterPre(cwd: string, tag: string) {
-  let packages = await getPackages(cwd);
+  let packages = await callGetPackages(cwd, "pre");
   let preStatePath = path.resolve(packages.root.dir, ".changeset", "pre.json");
   // TODO: verify that the pre state isn't broken
   let preState = await readPreState(packages.root.dir);

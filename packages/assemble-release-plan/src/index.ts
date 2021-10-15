@@ -1,11 +1,17 @@
-import { ReleasePlan, Config, NewChangeset, PreState } from "@changesets/types";
+import {
+  ReleasePlan,
+  Config,
+  NewChangeset,
+  PreState,
+  ChangesetPackages,
+  ChangesetPackage
+} from "@changesets/types";
 import determineDependents from "./determine-dependents";
 import flattenReleases from "./flatten-releases";
 import applyLinks from "./apply-links";
 import { incrementVersion } from "./increment";
 import * as semver from "semver";
 import { InternalError } from "@changesets/errors";
-import { Packages, Package } from "@manypkg/get-packages";
 import { getDependentsGraph } from "@changesets/get-dependents-graph";
 import { PreInfo, InternalRelease } from "./types";
 
@@ -71,7 +77,7 @@ function getNewVersion(
 
 function assembleReleasePlan(
   changesets: NewChangeset[],
-  packages: Packages,
+  packages: ChangesetPackages,
   config: Config,
   // intentionally not using an optional parameter here so the result of `readPreState` has to be passed in here
   preState: PreState | undefined,
@@ -199,7 +205,7 @@ function getRelevantChangesets(
 
 function getPreInfo(
   changesets: NewChangeset[],
-  packagesByName: Map<string, Package>,
+  packagesByName: Map<string, ChangesetPackage>,
   config: Config,
   preState: PreState | undefined
 ): PreInfo | undefined {

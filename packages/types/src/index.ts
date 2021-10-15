@@ -78,6 +78,7 @@ export type WrittenConfig = {
   linked?: Linked;
   access?: AccessType;
   baseBranch?: string;
+  getPackages?: string;
   /** The minimum bump type to trigger automatic update of internal dependencies that are part of the same release */
   updateInternalDependencies?: "patch" | "minor";
   ignore?: ReadonlyArray<string>;
@@ -124,19 +125,31 @@ export type PreState = {
   changesets: string[];
 };
 
+export type Command = "init" | "add" | "version" | "publish" | "status" | "pre";
+
 export type GetPackagesContext = {
   cwd: string;
-  command: "init" | "add" | "version" | "publish" | "status" | "pre" | null;
+  command: Command | null;
+};
+
+export type ChangesetPackages = {
+  /**
+   * Flag to tell if this project is a "root only" project – meaning that the
+   * root package is the only package that is affected. If it false only
+   * packages in `packages` will be treated.
+   */
+  isRoot: boolean;
+  root: ChangesetPackage;
+  packages: ChangesetPackage[];
 };
 
 export type ChangesetPackage = {
   dir: string;
   packageJson: PackageJSON;
-  isRoot: boolean;
 };
 
 export type GetPackages = (
   context: GetPackagesContext
-) => Promise<ChangesetPackage[]>;
+) => Promise<ChangesetPackages>;
 
 export type GetPackagesFunctions = { getPackages: GetPackages };

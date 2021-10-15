@@ -11,9 +11,9 @@ import path from "path";
 import outdent from "outdent";
 import spawn from "spawndamnit";
 import { defaultConfig } from "@changesets/config";
+import { callGetPackages } from "@changesets/get-packages";
 
 import applyReleasePlan from "./";
-import { getPackages } from "@manypkg/get-packages";
 
 const f = fixtures(__dirname);
 
@@ -104,7 +104,7 @@ async function testSetup(
   return {
     changedFiles: await applyReleasePlan(
       releasePlan,
-      await getPackages(tempDir),
+      await callGetPackages(tempDir, null),
       config
     ),
     tempDir
@@ -1905,7 +1905,7 @@ describe("apply release plan", () => {
       try {
         await applyReleasePlan(
           releasePlan.getReleasePlan(),
-          await getPackages(tempDir),
+          await callGetPackages(tempDir, null),
           releasePlan.config
         );
       } catch (e) {
@@ -1936,7 +1936,7 @@ describe("apply release plan", () => {
       try {
         await applyReleasePlan(
           releasePlan.getReleasePlan(),
-          await getPackages(tempDir),
+          await callGetPackages(tempDir, null),
           {
             ...releasePlan.config,
             changelog: [

@@ -4,7 +4,7 @@ import { error, log, success, warn } from "@changesets/logger";
 import * as git from "@changesets/git";
 import { readPreState } from "@changesets/pre";
 import { Config, PreState } from "@changesets/types";
-import { getPackages } from "@manypkg/get-packages";
+import { callGetPackages } from "@changesets/get-packages";
 import chalk from "chalk";
 
 function logReleases(pkgs: Array<{ name: string; newVersion: string }>) {
@@ -55,7 +55,7 @@ export default async function run(
     showNonLatestTagWarning(tag, preState);
   }
 
-  const { packages, tool } = await getPackages(cwd);
+  const { packages, isRoot } = await callGetPackages(cwd);
 
   const response = await publishPackages({
     packages,
@@ -76,7 +76,7 @@ export default async function run(
     // wont suffer from a race condition if another merge happens in the mean time (pushing tags wont
     // fail if we are behind the base branch).
     log(`Creating git tag${successful.length > 1 ? "s" : ""}...`);
-    if (tool !== "root") {
+    if (!isRoot) {
       for (const pkg of successful) {
         const tag = `${pkg.name}@${pkg.newVersion}`;
         log("New tag: ", tag);

@@ -2,8 +2,7 @@ import fixturez from "fixturez";
 import { read, parse } from "./";
 import jestInCase from "jest-in-case";
 import * as logger from "@changesets/logger";
-import { Config, WrittenConfig } from "@changesets/types";
-import { Packages } from "@manypkg/get-packages";
+import { Config, WrittenConfig, ChangesetPackages } from "@changesets/types";
 
 jest.mock("@changesets/logger");
 
@@ -15,13 +14,13 @@ type CorrectCase = {
 
 let f = fixturez(__dirname);
 
-let defaultPackages: Packages = {
+let defaultPackages: ChangesetPackages = {
   root: {
     packageJson: { name: "", version: "" },
     dir: "/"
   },
   packages: [],
-  tool: "yarn"
+  isRoot: false
 };
 
 const withPackages = (pkgNames: string[]) => ({

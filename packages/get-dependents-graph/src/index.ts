@@ -1,11 +1,14 @@
-import { Packages, Package } from "@manypkg/get-packages";
+import { ChangesetPackages, ChangesetPackage } from "@changesets/types";
 import getDependencyGraph from "./get-dependency-graph";
 
 export function getDependentsGraph(
-  packages: Packages,
+  packages: ChangesetPackages,
   opts?: { bumpVersionsWithWorkspaceProtocolOnly?: boolean }
 ) {
-  const graph: Map<string, { pkg: Package; dependents: string[] }> = new Map();
+  const graph: Map<
+    string,
+    { pkg: ChangesetPackage; dependents: string[] }
+  > = new Map();
 
   const { graph: dependencyGraph } = getDependencyGraph(packages, {
     bumpVersionsWithWorkspaceProtocolOnly:
@@ -13,7 +16,7 @@ export function getDependentsGraph(
   });
 
   const dependentsLookup: {
-    [key: string]: { pkg: Package; dependents: Array<string> };
+    [key: string]: { pkg: ChangesetPackage; dependents: Array<string> };
   } = {};
 
   packages.packages.forEach(pkg => {

@@ -26,7 +26,7 @@ describe("getting the dependency graph", function() {
           }
         }
       ],
-      tool: "pnpm"
+      isRoot: false
     });
     expect(graph.get("foo")!.dependencies).toStrictEqual([]);
     expect(valid).toBeTruthy();
@@ -56,7 +56,7 @@ describe("getting the dependency graph", function() {
           }
         }
       ],
-      tool: "pnpm"
+      isRoot: false
     });
     expect(valid).toBeFalsy();
   });

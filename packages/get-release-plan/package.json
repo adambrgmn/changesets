@@ -10,9 +10,9 @@
     "@babel/runtime": "^7.10.4",
     "@changesets/assemble-release-plan": "^5.0.1",
     "@changesets/config": "^1.6.1",
+    "@changesets/get-packages": "^0.0.0",
     "@changesets/pre": "^1.0.7",
     "@changesets/read": "^0.5.0",
-    "@changesets/types": "^4.0.1",
-    "@manypkg/get-packages": "^1.0.1"
+    "@changesets/types": "^4.0.1"
   }
 }

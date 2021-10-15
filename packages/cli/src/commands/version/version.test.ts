@@ -9,7 +9,7 @@ import { temporarilySilenceLogs } from "@changesets/test-utils";
 import writeChangeset from "@changesets/write";
 import { NewChangeset, Config } from "@changesets/types";
 import { defaultConfig } from "@changesets/config";
-import { getPackages } from "@manypkg/get-packages";
+import { getPackages } from "@changesets/get-packages";
 import pre from "../pre";
 import version from "./index";
 import humanId from "human-id";
@@ -247,7 +247,7 @@ describe("running version in a simple project", () => {
 
     await versionCommand(cwd, defaultOptions, modifiedDefaultConfig);
 
-    let packages = await getPackages(cwd);
+    let packages = await getPackages({ cwd, command: "version" });
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {
         name: "pkg-a",
@@ -319,7 +319,7 @@ describe("workspace range", () => {
     await writeChangesets([simpleChangeset2], cwd);
     await versionCommand(cwd, defaultOptions, modifiedDefaultConfig);
 
-    let packages = await getPackages(cwd);
+    let packages = await getPackages({ cwd, command: "version" });
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {
         name: "pkg-a",
@@ -347,7 +347,7 @@ describe("workspace range", () => {
     );
     await versionCommand(cwd, defaultOptions, modifiedDefaultConfig);
 
-    let packages = await getPackages(cwd);
+    let packages = await getPackages({ cwd, command: "version" });
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {
         name: "pkg-a",
@@ -382,7 +382,7 @@ describe("same package in different dependency types", () => {
 
     await version(cwd, defaultOptions, modifiedDefaultConfig);
 
-    let packages = (await getPackages(cwd))!;
+    let packages = (await getPackages({ cwd, command: "version" }))!;
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {
         devDependencies: {
@@ -551,7 +551,7 @@ describe("pre", () => {
       cwd
     );
     await version(cwd, defaultOptions, modifiedDefaultConfig);
-    let packages = (await getPackages(cwd))!;
+    let packages = (await getPackages({ cwd, command: "version" }))!;
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {
         dependencies: {
@@ -574,7 +574,7 @@ describe("pre", () => {
     );
 
     await version(cwd, defaultOptions, modifiedDefaultConfig);
-    packages = (await getPackages(cwd))!;
+    packages = (await getPackages({ cwd, command: "version" }))!;
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {
         dependencies: {
@@ -596,7 +596,7 @@ describe("pre", () => {
       cwd
     );
     await version(cwd, defaultOptions, modifiedDefaultConfig);
-    packages = (await getPackages(cwd))!;
+    packages = (await getPackages({ cwd, command: "version" }))!;
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {
         dependencies: {
@@ -618,7 +618,7 @@ describe("pre", () => {
       cwd
     );
     await version(cwd, defaultOptions, modifiedDefaultConfig);
-    packages = (await getPackages(cwd))!;
+    packages = (await getPackages({ cwd, command: "version" }))!;
     expect(packages.packages.map(x => x.packageJson)).toMatchInlineSnapshot(
       [
         {
@@ -651,7 +651,7 @@ describe("pre", () => {
     );
     await pre(cwd, { command: "exit" });
     await version(cwd, defaultOptions, modifiedDefaultConfig);
-    packages = (await getPackages(cwd))!;
+    packages = (await getPackages({ cwd, command: "version" }))!;
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {
         dependencies: {
@@ -746,7 +746,7 @@ describe("pre", () => {
     );
 
     await version(cwd, defaultOptions, modifiedDefaultConfig);
-    let packages = (await getPackages(cwd))!;
+    let packages = (await getPackages({ cwd, command: "version" }))!;
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {
         dependencies: {
@@ -776,7 +776,7 @@ describe("pre", () => {
       cwd
     );
     await version(cwd, defaultOptions, modifiedDefaultConfig);
-    packages = (await getPackages(cwd))!;
+    packages = (await getPackages({ cwd, command: "version" }))!;
 
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {
@@ -806,7 +806,7 @@ describe("pre", () => {
       cwd
     );
     await version(cwd, defaultOptions, modifiedDefaultConfig);
-    let packages = (await getPackages(cwd))!;
+    let packages = (await getPackages({ cwd, command: "version" }))!;
 
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {
@@ -829,7 +829,7 @@ describe("pre", () => {
       cwd
     );
     await version(cwd, defaultOptions, modifiedDefaultConfig);
-    packages = (await getPackages(cwd))!;
+    packages = (await getPackages({ cwd, command: "version" }))!;
 
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {
@@ -856,7 +856,7 @@ describe("pre", () => {
     );
     await version(cwd, defaultOptions, modifiedDefaultConfig);
 
-    let packages = (await getPackages(cwd))!;
+    let packages = (await getPackages({ cwd, command: "version" }))!;
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {
         dependencies: {
@@ -874,7 +874,7 @@ describe("pre", () => {
     await pre(cwd, { command: "exit" });
     await version(cwd, defaultOptions, modifiedDefaultConfig);
 
-    packages = (await getPackages(cwd))!;
+    packages = (await getPackages({ cwd, command: "version" }))!;
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {
         dependencies: {
@@ -903,7 +903,7 @@ describe("pre", () => {
       cwd
     );
     await version(cwd, defaultOptions, linkedConfig);
-    let packages = (await getPackages(cwd))!;
+    let packages = (await getPackages({ cwd, command: "version" }))!;
 
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {
@@ -926,7 +926,7 @@ describe("pre", () => {
       cwd
     );
     await version(cwd, defaultOptions, linkedConfig);
-    packages = (await getPackages(cwd))!;
+    packages = (await getPackages({ cwd, command: "version" }))!;
 
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {
@@ -947,7 +947,7 @@ describe("pre", () => {
       cwd
     );
     await version(cwd, defaultOptions, linkedConfig);
-    packages = (await getPackages(cwd))!;
+    packages = (await getPackages({ cwd, command: "version" }))!;
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {
         dependencies: { "pkg-b": "1.1.1-next.0" },
@@ -967,7 +967,7 @@ describe("pre", () => {
       cwd
     );
     await version(cwd, defaultOptions, linkedConfig);
-    packages = (await getPackages(cwd))!;
+    packages = (await getPackages({ cwd, command: "version" }))!;
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {
         dependencies: { "pkg-b": "1.1.1-next.0" },
@@ -992,7 +992,7 @@ describe("pre", () => {
 
     await pre(cwd, { command: "enter", tag: "next" });
     await version(cwd, defaultOptions, modifiedDefaultConfig);
-    let packages = (await getPackages(cwd))!;
+    let packages = (await getPackages({ cwd, command: "version" }))!;
 
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {
@@ -1014,7 +1014,7 @@ describe("pre", () => {
       cwd
     );
     await version(cwd, defaultOptions, modifiedDefaultConfig);
-    packages = (await getPackages(cwd))!;
+    packages = (await getPackages({ cwd, command: "version" }))!;
 
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {
@@ -1041,7 +1041,7 @@ describe("pre", () => {
     );
 
     await version(cwd, defaultOptions, modifiedDefaultConfig);
-    let packages = (await getPackages(cwd))!;
+    let packages = (await getPackages({ cwd, command: "version" }))!;
 
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {
@@ -1063,7 +1063,7 @@ describe("pre", () => {
       cwd
     );
     await version(cwd, defaultOptions, modifiedDefaultConfig);
-    packages = (await getPackages(cwd))!;
+    packages = (await getPackages({ cwd, command: "version" }))!;
 
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {
@@ -1092,7 +1092,7 @@ describe("pre", () => {
       cwd
     );
     await version(cwd, defaultOptions, linkedConfig);
-    let packages = (await getPackages(cwd))!;
+    let packages = (await getPackages({ cwd, command: "version" }))!;
 
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {
@@ -1118,7 +1118,7 @@ describe("pre", () => {
       cwd
     );
     await version(cwd, defaultOptions, linkedConfig);
-    packages = (await getPackages(cwd))!;
+    packages = (await getPackages({ cwd, command: "version" }))!;
 
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {
@@ -1150,7 +1150,7 @@ describe("pre", () => {
       cwd
     );
     await version(cwd, defaultOptions, linkedConfig);
-    let packages = (await getPackages(cwd))!;
+    let packages = (await getPackages({ cwd, command: "version" }))!;
 
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {
@@ -1176,7 +1176,7 @@ describe("pre", () => {
 
     await pre(cwd, { command: "enter", tag: "next" });
     await version(cwd, defaultOptions, modifiedDefaultConfig);
-    let packages = (await getPackages(cwd))!;
+    let packages = (await getPackages({ cwd, command: "version" }))!;
 
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {
@@ -1213,7 +1213,7 @@ describe("pre", () => {
       ...modifiedDefaultConfig,
       ignore: ["pkg-a"]
     });
-    let packages = (await getPackages(cwd))!;
+    let packages = (await getPackages({ cwd, command: "version" }))!;
 
     expect(packages.packages.map(x => x.packageJson)).toEqual([
       {

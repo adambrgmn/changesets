@@ -3,8 +3,12 @@ import path from "path";
 import micromatch from "micromatch";
 import { ValidationError } from "@changesets/errors";
 import { warn } from "@changesets/logger";
-import { Packages } from "@manypkg/get-packages";
-import { Config, WrittenConfig, Linked } from "@changesets/types";
+import {
+  Config,
+  WrittenConfig,
+  Linked,
+  ChangesetPackages
+} from "@changesets/types";
 import packageJson from "../package.json";
 import { getDependentsGraph } from "@changesets/get-dependents-graph";
 
@@ -62,12 +66,15 @@ function isArray<T>(
   return Array.isArray(arg);
 }
 
-export let read = async (cwd: string, packages: Packages) => {
+export let read = async (cwd: string, packages: ChangesetPackages) => {
   let json = await fs.readJSON(path.join(cwd, ".changeset", "config.json"));
   return parse(json, packages);
 };
 
-export let parse = (json: WrittenConfig, packages: Packages): Config => {
+export let parse = (
+  json: WrittenConfig,
+  packages: ChangesetPackages
+): Config => {
   let messages = [];
   let pkgNames: readonly string[] = packages.packages.map(
     ({ packageJson }) => packageJson.name
@@ -356,6 +363,6 @@ let fakePackage = {
 
 export let defaultConfig = parse(defaultWrittenConfig, {
   root: fakePackage,
-  tool: "root",
+  isRoot: true,
   packages: [fakePackage]
 });

@@ -4,7 +4,8 @@ import resolveFrom from "resolve-from";
 import {
   GetPackages,
   GetPackagesContext,
-  ChangesetPackage
+  ChangesetPackages,
+  WrittenConfig
 } from "@changesets/types";
 import { getPackages as manyPkgGetPackages } from "@manypkg/get-packages";
 
@@ -12,21 +13,38 @@ export const getPackages: GetPackages = async context => {
   const packages = await manyPkgGetPackages(context.cwd);
 
   if (packages.tool === "root") {
-    return [{ isRoot: true, ...packages.root }];
+    return {
+      isRoot: true,
+      root: packages.root,
+      packages: []
+    };
   }
 
-  return packages.packages.map(pkg => ({ isRoot: false, ...pkg }));
+  return {
+    isRoot: false,
+    root: packages.root,
+    packages: packages.packages
+  };
 };
 
 export const callGetPackages = async (
   cwd: string,
-  command: GetPackagesContext["command"]
-): Promise<ChangesetPackage[]> => {
+  command: GetPackagesContext["command"] = null
+): Promise<ChangesetPackages> => {
   let changesetDir = path.join(cwd, ".changeset");
-  let json = await fs.readJSON(path.join(changesetDir, "config.json"));
+
+  let json: Pick<WrittenConfig, "getPackages">;
+  try {
+    json = await fs.readJSON(path.join(changesetDir, "config.json"));
+  } catch (error) {
+    json = {};
+  }
 
   let getPackagesFunction: GetPackages;
-  if (typeof json.getPackages === "string") {
+  if (
+    typeof json.getPackages === "string" &&
+    json.getPackages !== "@changesets/get-packages"
+  ) {
     let modulePath = resolveFrom(changesetDir, json.getPackages);
     let mod = require(modulePath);
 

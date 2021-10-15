@@ -1,11 +1,11 @@
-import { Config } from "@changesets/types";
+import { Command, Config } from "@changesets/types";
 import fs from "fs-extra";
 import path from "path";
-import { getPackages } from "@manypkg/get-packages";
 import { getDependentsGraph } from "@changesets/get-dependents-graph";
 import { error } from "@changesets/logger";
 import { read } from "@changesets/config";
 import { ExitError } from "@changesets/errors";
+import { callGetPackages } from "@changesets/get-packages";
 
 import init from "./commands/init";
 import add from "./commands/add";
@@ -36,7 +36,10 @@ export async function run(
     throw new ExitError(1);
   }
 
-  const packages = await getPackages(cwd);
+  const packages = await callGetPackages(
+    cwd,
+    input.length < 1 ? "add" : (input[0] as Command)
+  );
 
   let config: Config;
   try {

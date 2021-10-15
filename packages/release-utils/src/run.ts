@@ -1,4 +1,5 @@
-import { getPackages, Package } from "@manypkg/get-packages";
+import { callGetPackages } from "@changesets/get-packages";
+import { ChangesetPackage } from "@changesets/types";
 import path from "path";
 import * as semver from "semver";
 import {
@@ -41,10 +42,10 @@ export async function runPublish({
   await gitUtils.pullBranch(branch, cwd);
   await gitUtils.push(branch, { includeTags: true, cwd });
 
-  let { packages, tool } = await getPackages(cwd);
-  let releasedPackages: Package[] = [];
+  let { packages, isRoot } = await callGetPackages(cwd, "publish");
+  let releasedPackages: ChangesetPackage[] = [];
 
-  if (tool !== "root") {
+  if (!isRoot) {
     let newTagRegex = /New tag:\s+(@[^/]+\/[^@]+|[^/]+)@([^\s]+)/;
     let packagesByName = new Map(packages.map(x => [x.packageJson.name, x]));
 

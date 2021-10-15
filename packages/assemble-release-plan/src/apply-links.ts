@@ -1,6 +1,5 @@
 import semver from "semver";
-import { Package } from "@manypkg/get-packages";
-import { Linked, VersionType } from "@changesets/types";
+import { Linked, VersionType, ChangesetPackage } from "@changesets/types";
 import { InternalRelease } from "./types";
 
 /*
@@ -17,7 +16,7 @@ import { InternalRelease } from "./types";
 */
 function applyLinks(
   releases: Map<string, InternalRelease>,
-  packagesByName: Map<string, Package>,
+  packagesByName: Map<string, ChangesetPackage>,
   linked: Linked
 ): boolean {
   let updated = false;

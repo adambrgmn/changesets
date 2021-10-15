@@ -1,8 +1,7 @@
 import { join } from "path";
 import semver from "semver";
 import chalk from "chalk";
-import { AccessType } from "@changesets/types";
-import { Package } from "@manypkg/get-packages";
+import { AccessType, ChangesetPackage } from "@changesets/types";
 import { info, warn } from "@changesets/logger";
 import { PreState } from "@changesets/types";
 import * as npmUtils from "./npm-utils";
@@ -44,7 +43,7 @@ const getTwoFactorState = ({
   publicPackages
 }: {
   otp?: string;
-  publicPackages: Package[];
+  publicPackages: ChangesetPackage[];
 }): TwoFactorState => {
   if (otp) {
     return {
@@ -80,7 +79,7 @@ export default async function publishPackages({
   preState,
   tag
 }: {
-  packages: Package[];
+  packages: ChangesetPackage[];
   access: AccessType;
   otp?: string;
   preState: PreState | undefined;
@@ -115,7 +114,7 @@ export default async function publishPackages({
 }
 
 async function publishAPackage(
-  pkg: Package,
+  pkg: ChangesetPackage,
   access: AccessType,
   twoFactorState: TwoFactorState,
   tag: string
@@ -148,7 +147,7 @@ async function publishAPackage(
 }
 
 async function getUnpublishedPackages(
-  packages: Array<Package>,
+  packages: Array<ChangesetPackage>,
   preState: PreState | undefined
 ) {
   const results: Array<PkgInfo> = await Promise.all(

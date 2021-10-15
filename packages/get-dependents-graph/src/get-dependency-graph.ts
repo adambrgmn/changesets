@@ -1,8 +1,11 @@
 // This is a modified version of the graph-getting in bolt
 import semver from "semver";
 import chalk from "chalk";
-import { Packages, Package } from "@manypkg/get-packages";
-import { PackageJSON } from "@changesets/types";
+import {
+  PackageJSON,
+  ChangesetPackages,
+  ChangesetPackage
+} from "@changesets/types";
 
 const DEPENDENCY_TYPES = [
   "dependencies",
@@ -35,21 +38,21 @@ const getAllDependencies = (config: PackageJSON) => {
 };
 
 export default function getDependencyGraph(
-  packages: Packages,
+  packages: ChangesetPackages,
   opts?: {
     bumpVersionsWithWorkspaceProtocolOnly?: boolean;
   }
 ): {
-  graph: Map<string, { pkg: Package; dependencies: Array<string> }>;
+  graph: Map<string, { pkg: ChangesetPackage; dependencies: Array<string> }>;
   valid: boolean;
 } {
   const graph = new Map<
     string,
-    { pkg: Package; dependencies: Array<string> }
+    { pkg: ChangesetPackage; dependencies: Array<string> }
   >();
   let valid = true;
 
-  const packagesByName: { [key: string]: Package } = {
+  const packagesByName: { [key: string]: ChangesetPackage } = {
     [packages.root.packageJson.name]: packages.root
   };
 

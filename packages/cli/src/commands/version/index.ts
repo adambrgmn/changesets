@@ -5,7 +5,7 @@ import { Config } from "@changesets/types";
 import applyReleasePlan from "@changesets/apply-release-plan";
 import readChangesets from "@changesets/read";
 import assembleReleasePlan from "@changesets/assemble-release-plan";
-import { getPackages } from "@manypkg/get-packages";
+import { callGetPackages } from "@changesets/get-packages";
 
 import { removeEmptyFolders } from "../../utils/v1-legacy/removeFolders";
 import { readPreState } from "@changesets/pre";
@@ -61,7 +61,7 @@ export default async function version(
     return;
   }
 
-  let packages = await getPackages(cwd);
+  let packages = await callGetPackages(cwd, "version");
 
   let releasePlan = assembleReleasePlan(
     changesets,

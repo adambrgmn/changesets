@@ -1,13 +1,12 @@
 // This function takes in changesets and returns one release per
 // package listed in the changesets
 
-import { NewChangeset } from "@changesets/types";
-import { Package } from "@manypkg/get-packages";
+import { NewChangeset, ChangesetPackage } from "@changesets/types";
 import { InternalRelease } from "./types";
 
 export default function flattenReleases(
   changesets: NewChangeset[],
-  packagesByName: Map<string, Package>,
+  packagesByName: Map<string, ChangesetPackage>,
   ignoredPackages: Readonly<string[]>
 ): Map<string, InternalRelease> {
   let releases: Map<string, InternalRelease> = new Map();

@@ -9,8 +9,7 @@ import writeChangeset from "@changesets/write";
 import status from "..";
 
 import humanId from "human-id";
-import { NewChangeset, ReleasePlan } from "@changesets/types";
-import { Package } from "@manypkg/get-packages";
+import { NewChangeset, ReleasePlan, ChangesetPackage } from "@changesets/types";
 
 jest.mock("human-id");
 jest.mock("@changesets/git");
@@ -56,7 +55,7 @@ const simpleReleasePlan: ReleasePlan = {
   preState: undefined
 };
 
-const simpleChangedPackagesList: Package[] = [
+const simpleChangedPackagesList: ChangesetPackage[] = [
   {
     packageJson: { name: "pkg-a", version: "1.0.0", dependencies: {} },
     dir: "/fake/folder/doesnt/matter"

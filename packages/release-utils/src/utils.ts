@@ -3,7 +3,8 @@ import remarkParse from "remark-parse";
 import remarkStringify from "remark-stringify";
 // @ts-ignore
 import mdastToString from "mdast-util-to-string";
-import { getPackages, Package } from "@manypkg/get-packages";
+import { callGetPackages } from "@changesets/get-packages";
+import { ChangesetPackage } from "@changesets/types";
 import spawn from "spawndamnit";
 
 export const BumpLevels = {
@@ -14,7 +15,7 @@ export const BumpLevels = {
 } as const;
 
 export async function getVersionsByDirectory(cwd: string) {
-  let { packages } = await getPackages(cwd);
+  let { packages } = await callGetPackages(cwd, "publish");
   return new Map(packages.map(x => [x.dir, x.packageJson.version]));
 }
 
@@ -22,8 +23,8 @@ export async function getChangedPackages(
   cwd: string,
   previousVersions: Map<string, string>
 ) {
-  let { packages } = await getPackages(cwd);
-  let changedPackages = new Set<Package>();
+  let { packages } = await callGetPackages(cwd, "publish");
+  let changedPackages = new Set<ChangesetPackage>();
 
   for (let pkg of packages) {
     const previousVersion = previousVersions.get(pkg.dir);

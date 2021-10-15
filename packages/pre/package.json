@@ -9,8 +9,8 @@
   "dependencies": {
     "@babel/runtime": "^7.10.4",
     "@changesets/errors": "^0.1.4",
+    "@changesets/get-packages": "^0.0.0",
     "@changesets/types": "^4.0.1",
-    "@manypkg/get-packages": "^1.0.1",
     "fs-extra": "^7.0.1"
   },
   "devDependencies": {

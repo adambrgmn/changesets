@@ -4,9 +4,9 @@ import {
   DependencyType,
   PackageJSON,
   VersionType,
-  Config
+  Config,
+  ChangesetPackage
 } from "@changesets/types";
-import { Package } from "@manypkg/get-packages";
 import { InternalRelease, PreInfo } from "./types";
 import { incrementVersion } from "./increment";
 
@@ -30,7 +30,7 @@ export default function determineDependents({
   config
 }: {
   releases: Map<string, InternalRelease>;
-  packagesByName: Map<string, Package>;
+  packagesByName: Map<string, ChangesetPackage>;
   dependencyGraph: Map<string, string[]>;
   preInfo: PreInfo | undefined;
   config: Config;

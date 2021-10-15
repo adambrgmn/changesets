@@ -1,5 +1,10 @@
-import { NewChangeset, Release, VersionType } from "@changesets/types";
-import { Package, Packages } from "@manypkg/get-packages";
+import {
+  NewChangeset,
+  Release,
+  VersionType,
+  ChangesetPackage,
+  ChangesetPackages
+} from "@changesets/types";
 
 function getPackage({
   name,
@@ -7,7 +12,7 @@ function getPackage({
 }: {
   name: string;
   version: string;
-}): Package {
+}): ChangesetPackage {
   return {
     packageJson: {
       name,
@@ -54,7 +59,7 @@ let getSimpleSetup = () => ({
       dir: "/"
     },
     packages: [getPackage({ name: "pkg-a", version: "1.0.0" })],
-    tool: "yarn" as const
+    isRoot: false
   },
   changesets: [
     getChangeset({ releases: [getRelease({ name: "pkg-a", type: "patch" })] })
@@ -62,10 +67,13 @@ let getSimpleSetup = () => ({
 });
 
 class FakeFullState {
-  packages: Packages;
+  packages: ChangesetPackages;
   changesets: NewChangeset[];
 
-  constructor(custom?: { packages?: Packages; changesets?: NewChangeset[] }) {
+  constructor(custom?: {
+    packages?: ChangesetPackages;
+    changesets?: NewChangeset[];
+  }) {
     let { packages, changesets } = { ...getSimpleSetup(), ...custom };
     this.packages = packages;
     this.changesets = changesets;
