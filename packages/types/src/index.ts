@@ -123,3 +123,20 @@ export type PreState = {
   };
   changesets: string[];
 };
+
+export type GetPackagesContext = {
+  cwd: string;
+  command: "init" | "add" | "version" | "publish" | "status" | "pre" | null;
+};
+
+export type ChangesetPackage = {
+  dir: string;
+  packageJson: PackageJSON;
+  isRoot: boolean;
+};
+
+export type GetPackages = (
+  context: GetPackagesContext
+) => Promise<ChangesetPackage[]>;
+
+export type GetPackagesFunctions = { getPackages: GetPackages };
