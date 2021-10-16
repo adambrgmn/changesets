@@ -16,7 +16,7 @@ export const getPackages: GetPackages = async context => {
     return {
       isRoot: true,
       root: packages.root,
-      packages: []
+      packages: [packages.root]
     };
   }
 
