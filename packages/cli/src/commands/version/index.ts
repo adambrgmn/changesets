@@ -61,7 +61,7 @@ export default async function version(
     return;
   }
 
-  let packages = await callGetPackages(cwd, "version");
+  let packages = await callGetPackages({ cwd, command: "version" });
 
   let releasePlan = assembleReleasePlan(
     changesets,

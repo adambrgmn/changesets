@@ -27,10 +27,10 @@ export const getPackages: GetPackages = async context => {
   };
 };
 
-export const callGetPackages = async (
-  cwd: string,
-  command: GetPackagesContext["command"] = null
-): Promise<ChangesetPackages> => {
+export const callGetPackages = async ({
+  cwd,
+  command = null
+}: GetPackagesContext): Promise<ChangesetPackages> => {
   let changesetDir = path.join(cwd, ".changeset");
 
   let json: Pick<WrittenConfig, "getPackages">;

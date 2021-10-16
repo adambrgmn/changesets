@@ -235,7 +235,7 @@ async function getChangedPackagesSinceRef({
   ref: string;
 }) {
   const changedFiles = await getChangedFilesSince({ ref, cwd, fullPath: true });
-  let packages = await callGetPackages(cwd, null);
+  let packages = await callGetPackages({ cwd, command: null });
 
   const fileToPackage: Record<string, ChangesetPackage> = {};
 

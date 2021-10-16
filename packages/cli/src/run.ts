@@ -36,10 +36,10 @@ export async function run(
     throw new ExitError(1);
   }
 
-  const packages = await callGetPackages(
+  const packages = await callGetPackages({
     cwd,
-    input.length < 1 ? "add" : (input[0] as Command)
-  );
+    command: input.length < 1 ? "add" : (input[0] as Command)
+  });
 
   let config: Config;
   try {

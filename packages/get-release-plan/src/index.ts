@@ -10,7 +10,7 @@ export default async function getReleasePlan(
   sinceRef?: string,
   passedConfig?: Config
 ): Promise<ReleasePlan> {
-  const packages = await callGetPackages(cwd, "publish");
+  const packages = await callGetPackages({ cwd, command: "publish" });
   const preState = await readPreState(cwd);
   const readConfig = await read(cwd, packages);
   const config = passedConfig ? { ...readConfig, ...passedConfig } : readConfig;

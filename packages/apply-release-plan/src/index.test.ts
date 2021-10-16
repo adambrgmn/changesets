@@ -104,7 +104,7 @@ async function testSetup(
   return {
     changedFiles: await applyReleasePlan(
       releasePlan,
-      await callGetPackages(tempDir, null),
+      await callGetPackages({ cwd: tempDir, command: null }),
       config
     ),
     tempDir
@@ -1905,7 +1905,7 @@ describe("apply release plan", () => {
       try {
         await applyReleasePlan(
           releasePlan.getReleasePlan(),
-          await callGetPackages(tempDir, null),
+          await callGetPackages({ cwd: tempDir, command: null }),
           releasePlan.config
         );
       } catch (e) {
@@ -1936,7 +1936,7 @@ describe("apply release plan", () => {
       try {
         await applyReleasePlan(
           releasePlan.getReleasePlan(),
-          await callGetPackages(tempDir, null),
+          await callGetPackages({ cwd: tempDir, command: null }),
           {
             ...releasePlan.config,
             changelog: [

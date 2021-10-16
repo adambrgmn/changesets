@@ -1,4 +1,5 @@
-export const getPackages = () => {
+// eslint-disable-next-line no-undef
+export const getPackages = jest.fn(() => {
   return {
     isRoot: false,
     root: { dir: "/", packageJson: { name: "root-pkg", version: "0.0.0" } },
@@ -17,4 +18,4 @@ export const getPackages = () => {
       }
     ]
   };
-};
+});

@@ -2,6 +2,8 @@ import path from "path";
 import fs from "fs";
 import { promisify } from "util";
 import { callGetPackages } from ".";
+// @ts-ignore
+import { getPackages as fakeGetPackags } from "./fake-get-packages";
 
 const readdir = promisify(fs.readdir);
 
@@ -29,7 +31,7 @@ describe("callGetPackages", () => {
   it("calls default getPackages function if no other config is provided", async () => {
     readJSON.mockResolvedValueOnce({});
 
-    let result = await callGetPackages(cwd, "add");
+    let result = await callGetPackages({ cwd, command: "add" });
 
     expect(result.isRoot).toBeFalsy();
     expect(result.root).toEqual(expectPackage);
@@ -37,8 +39,8 @@ describe("callGetPackages", () => {
     expect(result.packages).toEqual(expect.arrayContaining([expectPackage]));
 
     let actualPackages = await readdir(path.join(cwd, "packages"));
-    expect(result.packages.map(pkg => path.basename(pkg.dir))).toEqual(
-      actualPackages
+    expect(result.packages.map(pkg => path.basename(pkg.dir)).sort()).toEqual(
+      actualPackages.sort()
     );
   });
 
@@ -50,7 +52,7 @@ describe("callGetPackages", () => {
       )
     });
 
-    let result = await callGetPackages(cwd, "add");
+    let result = await callGetPackages({ cwd, command: "add" });
     expect(result.isRoot).toBeFalsy();
     expect(result.root).toEqual({
       dir: "/",
@@ -62,5 +64,7 @@ describe("callGetPackages", () => {
       dir: "package-a",
       packageJson: { name: "package-a", version: "0.0.0" }
     });
+
+    expect(fakeGetPackags).toHaveBeenCalledWith({ cwd, command: "add" });
   });
 });

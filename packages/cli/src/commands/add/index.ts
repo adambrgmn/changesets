@@ -22,7 +22,7 @@ export default async function add(
   { empty, open }: { empty?: boolean; open?: boolean },
   config: Config
 ) {
-  const packages = await callGetPackages(cwd, "add");
+  const packages = await callGetPackages({ cwd, command: "add" });
   const changesetBase = path.resolve(cwd, ".changeset");
 
   let newChangeset: UnwrapPromise<ReturnType<typeof createChangeset>>;

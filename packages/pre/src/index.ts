@@ -45,7 +45,7 @@ export async function exitPre(cwd: string) {
 }
 
 export async function enterPre(cwd: string, tag: string) {
-  let packages = await callGetPackages(cwd, "pre");
+  let packages = await callGetPackages({ cwd, command: "pre" });
   let preStatePath = path.resolve(packages.root.dir, ".changeset", "pre.json");
   // TODO: verify that the pre state isn't broken
   let preState = await readPreState(packages.root.dir);

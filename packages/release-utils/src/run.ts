@@ -42,7 +42,10 @@ export async function runPublish({
   await gitUtils.pullBranch(branch, cwd);
   await gitUtils.push(branch, { includeTags: true, cwd });
 
-  let { packages, root, isRoot } = await callGetPackages(cwd, "publish");
+  let { packages, root, isRoot } = await callGetPackages({
+    cwd,
+    command: "publish"
+  });
   let releasedPackages: ChangesetPackage[] = [];
 
   if (!isRoot) {

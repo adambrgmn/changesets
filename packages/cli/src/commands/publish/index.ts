@@ -55,7 +55,10 @@ export default async function run(
     showNonLatestTagWarning(tag, preState);
   }
 
-  const { packages, isRoot } = await callGetPackages(cwd);
+  const { packages, isRoot } = await callGetPackages({
+    cwd,
+    command: "publish"
+  });
 
   const response = await publishPackages({
     packages,
