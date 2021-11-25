@@ -1,0 +1,7 @@
+{
+  "main": "dist/get-packages.cjs.js",
+  "module": "dist/get-packages.esm.js",
+  "preconstruct": {
+    "source": "../src/nx.ts"
+  }
+}

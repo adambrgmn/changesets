@@ -6,6 +6,12 @@
   "module": "dist/get-packages.esm.js",
   "license": "MIT",
   "repository": "https://github.com/changesets/changesets/tree/main/packages/get-packages",
+  "preconstruct": {
+    "entrypoints": [
+      ".",
+      "nx"
+    ]
+  },
   "dependencies": {
     "@changesets/types": "4.0.1",
     "@manypkg/get-packages": "^1.0.1",
